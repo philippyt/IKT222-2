@@ -98,8 +98,14 @@ def index():
 def create():
     # On Post requesti, the form data (title and content) is sanitized and inserted into the database
     if request.method == 'POST':
+
+        #These lines are safe from Cross Site Scripting because of the "bleach" library
         title = bleach.clean(request.form['title'])
         content = bleach.clean(request.form['content'])
+
+        #These lines are vulnerable to Cross Site Scripting
+        title = request.form['title']
+        content = request.form['content']
 
         user_id = get_current_user_id()
 
